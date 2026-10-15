@@ -32,6 +32,9 @@ h2{font-size:1.1rem;margin:0 0 4px}
 .box{display:inline-flex;width:30px;height:30px;border:2px solid var(--acc);border-radius:6px;align-items:center;justify-content:center;font-weight:700;cursor:pointer;color:var(--bg)}
 .box.on{background:var(--acc)}.locked .box{cursor:default}
 .grid tr.ok td:first-child{box-shadow:inset 5px 0 var(--ok)}.grid tr.bad td:first-child{box-shadow:inset 5px 0 var(--bad)}
+.unit{font-size:1.25rem;margin:26px 0 0;padding:8px 12px;border-radius:10px;background:var(--acc);color:var(--bg)}.unit .zh{color:inherit;opacity:.9}
+.w{display:block;width:100%;padding:9px;margin:6px 0;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+details{margin-top:6px}summary{cursor:pointer;color:var(--acc);font-weight:600}
 button{font:inherit;padding:11px 20px;border-radius:10px;border:0;background:var(--acc);color:var(--bg);cursor:pointer;font-weight:700}
 button.sec{background:transparent;color:var(--acc);border:2px solid var(--acc)}
 .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -44,22 +47,47 @@ table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{border-bottom:1p
 </head>
 <body>
 <div class="wrap">
-  <h1>Adab dalam Majlis Rasmi dan Tidak Rasmi
-    <span class="zh">正式与非正式场合的礼仪</span></h1>
+  <h1>Ulangkaji Unit 10 &amp; Unit 8<span class="zh">单元10和单元8复习</span></h1>
   <div class="card hdr">
     <label>Nama 姓名<input id="name" placeholder="Nama / 姓名"></label>
     <label>Kelas 班级<input id="cls" placeholder="Contoh: 5 Bestari"></label>
   </div>
+  <h2 class="unit">Ulangkaji Unit 10<span class="zh">单元10复习：正式与非正式场合的礼仪</span></h2>
   <p>Ketik satu kotak di kiri, kemudian ketik jawapan yang betul di kanan. Ketik semula untuk batal.
     <span class="zh">先点左边一格，再点右边正确的答案。再点一次可取消。</span></p>
   <div id="parts"></div>
+  <h2 class="unit">Ulangkaji Unit 8<span class="zh">单元8复习：5R</span></h2>
+  <div class="card" id="u8">
+    <h2>1. Senaraikan konsep 5R.<span class="zh">列出5R的概念。</span></h2>
+    <input class="w" data-u8="konsep" placeholder="1."><input class="w" data-u8="konsep" placeholder="2."><input class="w" data-u8="konsep" placeholder="3."><input class="w" data-u8="konsep" placeholder="4."><input class="w" data-u8="konsep" placeholder="5.">
+    <details><summary>Contoh jawapan 例子答案</summary><ul>
+      <li>Rethink &ndash; Fikir semula<span class="zh">重新思考</span></li>
+      <li>Reduce &ndash; Kurangkan<span class="zh">减少使用</span></li></ul>
+      <span class="zh">Jangan salin, tulis semua 5 konsep. 请勿照抄，写出全部5个概念。</span></details>
+    <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+    <h2>2. Tulis 4 kepentingan amalan 5R.<span class="zh">写出实践5R的4个重要性。</span></h2>
+    <textarea class="w" rows="2" data-u8="kepentingan" placeholder="1."></textarea><textarea class="w" rows="2" data-u8="kepentingan" placeholder="2."></textarea><textarea class="w" rows="2" data-u8="kepentingan" placeholder="3."></textarea><textarea class="w" rows="2" data-u8="kepentingan" placeholder="4."></textarea>
+    <details><summary>Contoh jawapan 例子答案</summary><ul>
+      <li>Mengurangkan pencemaran alam sekitar.<span class="zh">减少环境污染。</span></li>
+      <li>Menjimatkan sumber asli.<span class="zh">节省天然资源。</span></li>
+      <li>Menjimatkan perbelanjaan.<span class="zh">节省开支。</span></li></ul>
+      <span class="zh">Tulis jawapan anda sendiri. 请写出你自己的答案。</span></details>
+    <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+    <h2>3. Tulis 2 cara mengamalkan 5R.<span class="zh">写出实践5R的2个方法。</span></h2>
+    <textarea class="w" rows="2" data-u8="cara" placeholder="1."></textarea><textarea class="w" rows="2" data-u8="cara" placeholder="2."></textarea>
+    <details><summary>Contoh jawapan 例子答案</summary><ul>
+      <li>Membawa beg boleh guna semula semasa membeli-belah.<span class="zh">购物时携带可重复使用的购物袋。</span></li>
+      <li>Mengasingkan sampah untuk dikitar semula.<span class="zh">把垃圾分类以便回收。</span></li></ul>
+      <span class="zh">Tulis cara lain juga. 也请写出其他方法。</span></details>
+  </div>
+  
   <div class="card">
     <div class="bar"><button id="submit">Hantar 提交</button><button class="sec" id="reset">Mula semula 重做</button><span id="res"></span></div>
     <div class="msg" id="msg"></div>
   </div>
   <div class="card" id="teacher" hidden>
     <h2>Keputusan murid 学生成绩 (guru 老师)</h2>
-    <div class="scroll"><table><thead><tr><th>Nama 姓名</th><th>Kelas 班级</th><th>Markah 分数</th><th>Masa 时间</th></tr></thead><tbody id="rows"></tbody></table></div>
+    <div class="scroll"><table><thead><tr><th>Nama 姓名</th><th>Kelas 班级</th><th>Markah 分数</th><th>Masa 时间</th><th>Unit 8</th></tr></thead><tbody id="rows"></tbody></table></div>
   </div>
 </div>
 <script>
@@ -87,8 +115,7 @@ const PARTS=[
  [["Tetamu makan dengan cara yang tidak sesuai.","宾客用餐方式不恰当。"],["Tetamu berasa kurang selesa.","宾客感到不自在。"]],
  [["Tetamu tidak menghormati penganjur.","宾客不尊重主办者。"],["Penganjur berasa malu.","主办者感到难为情。"]]]}
 ];
-// Paste your Google Apps Script web app URL between the quotes:
-const SHEET_URL='https://script.google.com/macros/s/AKfycbwH0_2aYtKWkOv3AW6OWiw73HFFHjDeGpKbc6UhUaDWrS9r4IXlj4U0FyI2bi_v7Xnj/exec';
+const FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLSd0jAMJd40rS8SmhBRvZX0hKRrphljyZwIUclpMJldygHNaGw/formResponse';
 const L="ABCDEFGHIJ";
 const shuf=n=>{const a=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 let order=PARTS.map(p=>shuf(p.p.length));
@@ -162,26 +189,31 @@ function render(res){
   });
 }
 function score(){let s=0,t=0;PARTS.forEach((P,pi)=>P.p.forEach((_,i)=>{t++;if(M[pi][i]===i)s++}));return[s,t]}
+function getU8(){const g=k=>[...document.querySelectorAll('[data-u8="'+k+'"]')].map(x=>x.value.trim());return{konsep:g('konsep'),kepentingan:g('kepentingan'),cara:g('cara')}}
 const msg=document.getElementById('msg'),resEl=document.getElementById('res');
-document.getElementById('reset').onclick=()=>{locked=false;M=PARTS.map(p=>p.p.map(()=>null));sel=PARTS.map(()=>null);order=PARTS.map(p=>shuf(p.p.length));resEl.textContent='';msg.textContent='';render()};
+document.getElementById('reset').onclick=()=>{locked=false;document.querySelectorAll('#u8 input,#u8 textarea').forEach(x=>{x.value='';x.readOnly=false});M=PARTS.map(p=>p.p.map(()=>null));sel=PARTS.map(()=>null);order=PARTS.map(p=>shuf(p.p.length));resEl.textContent='';msg.textContent='';render()};
 document.getElementById('submit').onclick=async()=>{
   if(locked)return;
   const name=document.getElementById('name').value.trim(),cls=document.getElementById('cls').value.trim();
   if(!name||!cls){msg.textContent='Sila isi nama dan kelas. 请填写姓名和班级。';return}
   const left=M.flat().filter(x=>x===null).length;
   if(left&&!confirm('Masih ada '+left+' soalan belum dijawab. Hantar juga? 还有 '+left+' 题未答，仍要提交吗？'))return;
-  const [s,t]=score();locked=true;render(true);
-  resEl.textContent='Markah 分数: '+s+' / '+t;
-  if(SHEET_URL){
+  const [s,t]=score();locked=true;render(true);const u8=getU8();document.querySelectorAll('#u8 input,#u8 textarea').forEach(x=>x.readOnly=true);
+  resEl.textContent='Markah Unit 10 单元10分数: '+s+' / '+t;
+  if(FORM_URL){
     try{
-      await fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({name,cls,score:s,total:t})});
+      const num=a=>a.map((v,i)=>(i+1)+'. '+v).join('\n');
+      const fd=new URLSearchParams();
+      fd.append('entry.1171779057',name);fd.append('entry.847081245',cls);fd.append('entry.417090780',s+' / '+t);
+      fd.append('entry.417024696',num(u8.konsep));fd.append('entry.751441566',num(u8.kepentingan));fd.append('entry.136390501',num(u8.cara));
+      await fetch(FORM_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:fd.toString()});
       msg.textContent='\u2705 Telah dihantar kepada guru. \u5df2\u63d0\u4ea4\u7ed9\u8001\u5e08\u3002';
     }catch(e){msg.textContent='\u26a0\ufe0f Gagal menghantar. \u63d0\u4ea4\u5931\u8d25\uff0c\u8bf7\u518d\u8bd5\u3002'}
     return;
   }
   if(!db||!uid){msg.textContent='Jawapan disemak tetapi tidak dapat dihantar kepada guru (sila log masuk). 已批改，但无法提交给老师（请先登录）。';return}
   try{
-    await db.collection('submissions').doc(uid).set({name,cls,score:s,total:t,answers:M,ts:Date.now()});
+    await db.collection('submissions').doc(uid).set({name,cls,score:s,total:t,answers:M,u8,ts:Date.now()});
     msg.textContent='✅ Telah dihantar kepada guru. 已提交给老师。';
   }catch(e){msg.textContent='⚠️ Gagal menghantar. 提交失败，请再试。 ('+(e&&e.code||'error')+')'}
 };
@@ -195,7 +227,7 @@ render();
         document.getElementById('teacher').hidden=false;
         if(db)db.collection('submissions').onSnapshot(snap=>{
           const rows=snap.docs.map(d=>d.data()).filter(Boolean).sort((a,b)=>(b.ts||0)-(a.ts||0));
-          document.getElementById('rows').innerHTML=rows.length?rows.map(r=>'<tr><td>'+esc(String(r.name||''))+'</td><td>'+esc(String(r.cls||''))+'</td><td>'+r.score+' / '+r.total+'</td><td>'+new Date(r.ts).toLocaleString()+'</td></tr>').join(''):'<tr><td colspan="4">Belum ada penghantaran. 暂无提交。</td></tr>';
+          document.getElementById('rows').innerHTML=rows.length?rows.map(r=>'<tr><td>'+esc(String(r.name||''))+'</td><td>'+esc(String(r.cls||''))+'</td><td>'+r.score+' / '+r.total+'</td><td>'+new Date(r.ts).toLocaleString()+'</td><td>'+(r.u8?'<details><summary>Lihat 查看</summary>'+esc(['Konsep: '+(r.u8.konsep||[]).join('; '),'Kepentingan: '+(r.u8.kepentingan||[]).join(' | '),'Cara: '+(r.u8.cara||[]).join(' | ')].join('\n')).replace(/\n/g,'<br>')+'</details>':'-')+'</td></tr>').join(''):'<tr><td colspan="5">Belum ada penghantaran. 暂无提交。</td></tr>';
         },()=>{});
       }}
   }catch(e){}
