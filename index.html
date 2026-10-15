@@ -53,8 +53,6 @@ table{border-collapse:collapse;width:100%;font-size:.9rem}th,td{border-bottom:1p
     <label>Kelas 班级<input id="cls" placeholder="Contoh: 5 Bestari"></label>
   </div>
   <h2 class="unit">Ulangkaji Unit 10<span class="zh">单元10复习：正式与非正式场合的礼仪</span></h2>
-  <p>Ketik satu kotak di kiri, kemudian ketik jawapan yang betul di kanan. Ketik semula untuk batal.
-    <span class="zh">先点左边一格，再点右边正确的答案。再点一次可取消。</span></p>
   <div id="parts"></div>
   <h2 class="unit">Ulangkaji Unit 8<span class="zh">单元8复习：5R</span></h2>
   <div class="card" id="u8">
@@ -107,7 +105,7 @@ const PARTS=[
  [["Imej penganjur dan tetamu terpelihara","主办者和宾客的形象得以维护"],["Tetamu berpakaian sopan dan bertegur sapa dengan penganjur.","宾客穿着得体并向主办者打招呼。"]],
  [["Majlis berjalan dengan sempurna","活动进行得完美"],["Warga emas diberi keutamaan tempat duduk.","优先让年长者就座。"]],
  [["Disiplin diri dapat dibentuk","可以培养自律"],["Tetamu duduk dengan sopan.","宾客礼貌地就座。"]]]},
-{t:["Bahagian C: Padankan perbuatan tidak beradab dengan kesannya","C部分：把不礼貌的行为与后果配对"],
+{t:["Bahagian C: Kesan perbuatan tidak beradab","C部分：不礼貌行为的后果"],
  p:[
  [["Tetamu bercakap kuat semasa ucapan.","宾客在致辞时大声说话。"],["Tetamu akan terganggu.","宾客会受到干扰。"]],
  [["Tetamu tidak mengikut atur cara majlis.","宾客不遵守活动流程。"],["Atur cara majlis tidak berjalan lancar.","活动流程进行得不顺利。"]],
@@ -142,27 +140,51 @@ function tableCard(res){
   o.forEach((ri,k)=>op.appendChild(el('<div class="item" style="cursor:default"><span class="n">'+L[k]+'.</span> '+txt(P.p[ri][1])+'</div>')));
   return card;
 }
-function tableCard2(res){
-  const P=PARTS[0],o=order[0];
+const NT=[null,['Rujuk buku teks muka surat 150.','请参考课本第150页。'],null];
+const OPTC=[
+ ['Tetamu akan terganggu.','宾客会受到干扰。',true],
+ ['Majlis berjalan dengan lancar.','活动顺利进行。',false],
+ ['Atur cara majlis tidak berjalan lancar.','活动流程进行得不顺利。',true],
+ ['Penganjur berasa bangga dan gembira.','主办者感到自豪和高兴。',false],
+ ['Suasana majlis kurang menyenangkan.','活动气氛不太愉快。',true],
+ ['Tetamu berasa kurang selesa.','宾客感到不自在。',true],
+ ['Imej tetamu dan penganjur terpelihara.','宾客和主办者的形象得以维护。',false],
+ ['Penganjur berasa malu.','主办者感到难为情。',true]];
+let CK=OPTC.map(()=>false),orderC=shuf(OPTC.length);
+function checkCard(res){
+  const P=PARTS[2];
+  const card=el('<div class="card'+(locked?' locked':'')+'"><h2>'+esc(P.t[0])+'<span class="zh">'+esc(P.t[1])+'</span></h2><p>Tandakan (\u2714) semua kesan sekiranya tidak beradab dalam majlis rasmi dan tidak rasmi.<span class="zh">勾选在正式与非正式场合不礼貌所造成的所有后果。</span><br><b>📖 Rujuk buku teks muka surat 151.</b><span class="zh">请参考课本第151页。</span></p><div class="opts"></div></div>');
+  const op=card.querySelector('.opts');
+  orderC.forEach(oi=>{
+    const o=OPTC[oi];
+    const it=el('<div class="item" style="display:flex;gap:10px;align-items:flex-start"><span class="box'+(CK[oi]?' on':'')+'">'+(CK[oi]?'\u2714':'')+'</span><div>'+txt([o[0],o[1]])+'</div></div>');
+    if(res){if(o[2])it.classList.add('ok');else if(CK[oi])it.classList.add('bad')}
+    it.onclick=()=>{if(locked)return;CK[oi]=!CK[oi];render()};
+    op.appendChild(it)});
+  return card}
+const HD=[['Adab','\u793c\u4eea'],['Kepentingan','\u91cd\u8981\u6027'],['Perbuatan','\u884c\u4e3a']];
+function tableCard2(res,pi){
+  const P=PARTS[pi],o=order[pi];
   const card=el('<div class="card'+(locked?' locked':'')+'"><h2>'+esc(P.t[0])+'<span class="zh">'+esc(P.t[1])+'</span></h2><p>Pilih satu jawapan yang betul bagi setiap baris.<span class="zh">每一行从下拉菜单中选择一个正确答案。</span></p><div class="scroll"><table class="grid"></table></div></div>');
   const tb=card.querySelector('table');
-  let h='<tr><th>Adab \u793c\u4eea</th><th>Jawapan \u7b54\u6848</th></tr>';
+  if(NT[pi])card.querySelector('p').insertAdjacentHTML('beforeend','<br><b>📖 '+esc(NT[pi][0])+'</b><span class="zh">'+esc(NT[pi][1])+'</span>');
+  let h='<tr><th>'+HD[pi][0]+' '+HD[pi][1]+'</th><th>Jawapan \u7b54\u6848</th></tr>';
   P.p.forEach((q,i)=>{
-    const m=M[0][i];
+    const m=M[pi][i];
     const opts='<option value="">\u2014 Pilih \u9009\u62e9 \u2014</option>'+o.map((ri,k)=>'<option value="'+ri+'"'+(m===ri?' selected':'')+'>'+L[k]+'. '+esc(P.p[ri][1][0])+' / '+esc(P.p[ri][1][1])+'</option>').join('');
     h+='<tr class="'+(res?(m===i?'ok':'bad'):'')+'"><td><b>'+(i+1)+'.</b> '+txt(q[0])+'</td><td style="text-align:left"><select data-i="'+i+'" style="width:100%;padding:8px;font:inherit;border:2px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)"'+(locked?' disabled':'')+'>'+opts+'</select>'+(res&&m!==i?'<span class="zh">\u2714 '+esc(P.p[i][1][0])+' / '+esc(P.p[i][1][1])+'</span>':'')+'</td></tr>';
   });
   tb.innerHTML=h;
   tb.querySelectorAll('select').forEach(s=>s.onchange=()=>{if(locked)return;
     const i=+s.dataset.i;
-    if(s.value===''){M[0][i]=null}else{const ri=+s.value;const x=M[0].indexOf(ri);if(x>-1)M[0][x]=null;M[0][i]=ri}
+    if(s.value===''){M[pi][i]=null}else{const ri=+s.value;const x=M[pi].indexOf(ri);if(x>-1)M[pi][x]=null;M[pi][i]=ri}
     render()});
   return card;
 }
 function render(res){
   const root=document.getElementById('parts');root.innerHTML='';
   PARTS.forEach((P,pi)=>{
-    if(pi===0){root.appendChild(tableCard2(res));return}
+    {root.appendChild(pi===2?checkCard(res):tableCard2(res,pi));return}
     const card=el('<div class="card'+(locked?' locked':'')+'"><h2>'+esc(P.t[0])+'<span class="zh">'+esc(P.t[1])+'</span></h2><div class="cols"><div class="l"></div><div class="r"></div></div></div>');
     const l=card.querySelector('.l'),r=card.querySelector('.r');
     P.p.forEach((q,i)=>{
@@ -188,15 +210,15 @@ function render(res){
     root.appendChild(card);
   });
 }
-function score(){let s=0,t=0;PARTS.forEach((P,pi)=>P.p.forEach((_,i)=>{t++;if(M[pi][i]===i)s++}));return[s,t]}
+function score(){let s=0,t=0;PARTS.slice(0,2).forEach((P,pi)=>P.p.forEach((_,i)=>{t++;if(M[pi][i]===i)s++}));let ok=0,bad=0;OPTC.forEach((o,i)=>{if(CK[i]){o[2]?ok++:bad++}});t+=OPTC.filter(o=>o[2]).length;s+=Math.max(0,ok-bad);return[s,t]}
 function getU8(){const g=k=>[...document.querySelectorAll('[data-u8="'+k+'"]')].map(x=>x.value.trim());return{konsep:g('konsep'),kepentingan:g('kepentingan'),cara:g('cara')}}
 const msg=document.getElementById('msg'),resEl=document.getElementById('res');
-document.getElementById('reset').onclick=()=>{locked=false;document.querySelectorAll('#u8 input,#u8 textarea').forEach(x=>{x.value='';x.readOnly=false});M=PARTS.map(p=>p.p.map(()=>null));sel=PARTS.map(()=>null);order=PARTS.map(p=>shuf(p.p.length));resEl.textContent='';msg.textContent='';render()};
+document.getElementById('reset').onclick=()=>{locked=false;document.querySelectorAll('#u8 input,#u8 textarea').forEach(x=>{x.value='';x.readOnly=false});CK=OPTC.map(()=>false);orderC=shuf(OPTC.length);M=PARTS.map(p=>p.p.map(()=>null));sel=PARTS.map(()=>null);order=PARTS.map(p=>shuf(p.p.length));resEl.textContent='';msg.textContent='';render()};
 document.getElementById('submit').onclick=async()=>{
   if(locked)return;
   const name=document.getElementById('name').value.trim(),cls=document.getElementById('cls').value.trim();
   if(!name||!cls){msg.textContent='Sila isi nama dan kelas. 请填写姓名和班级。';return}
-  const left=M.flat().filter(x=>x===null).length;
+  const left=M.slice(0,2).flat().filter(x=>x===null).length+(CK.some(Boolean)?0:1);
   if(left&&!confirm('Masih ada '+left+' soalan belum dijawab. Hantar juga? 还有 '+left+' 题未答，仍要提交吗？'))return;
   const [s,t]=score();locked=true;render(true);const u8=getU8();document.querySelectorAll('#u8 input,#u8 textarea').forEach(x=>x.readOnly=true);
   resEl.textContent='Markah Unit 10 单元10分数: '+s+' / '+t;
@@ -213,7 +235,7 @@ document.getElementById('submit').onclick=async()=>{
   }
   if(!db||!uid){msg.textContent='Jawapan disemak tetapi tidak dapat dihantar kepada guru (sila log masuk). 已批改，但无法提交给老师（请先登录）。';return}
   try{
-    await db.collection('submissions').doc(uid).set({name,cls,score:s,total:t,answers:M,u8,ts:Date.now()});
+    await db.collection('submissions').doc(uid).set({name,cls,score:s,total:t,answers:M,c:CK,u8,ts:Date.now()});
     msg.textContent='✅ Telah dihantar kepada guru. 已提交给老师。';
   }catch(e){msg.textContent='⚠️ Gagal menghantar. 提交失败，请再试。 ('+(e&&e.code||'error')+')'}
 };
